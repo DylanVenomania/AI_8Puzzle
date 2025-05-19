@@ -255,17 +255,279 @@
         
   ![Greedy Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/greedy.gif)
   ### A*
+    1. Ý tưởng tổng quát của A*
+        A* là thuật toán tìm kiếm kết hợp giữa chi phí thực tế đã đi (g(n)) và ước lượng chi phí còn lại đến đích (h(n)), theo công thức:
+        f(n) = g(n) + h(n)
+        Ở mỗi bước, thuật toán luôn chọn trạng thái có giá trị f(n) nhỏ nhất để mở rộng.
+        Nếu heuristic h(n) là admissible (không vượt quá chi phí thực sự đến đích), A* đảm bảo tìm được đường đi ngắn nhất.
+        Ưu điểm: Tìm đường đi tối ưu, tận dụng cả chi phí thực lẫn thông tin heuristic.
+        Nhược điểm: Tốn nhiều bộ nhớ nếu không gian trạng thái lớn, phụ thuộc vào chất lượng heuristic.
+      2. Hoạt động
+        Khởi tạo
+          Đưa trạng thái đầu (initial_state) vào một hàng đợi ưu tiên (priority queue), với f(n) = g(n) + h(n) (g(n) = 0 ở trạng thái đầu).
+          Tạo một dictionary (g_scores) để lưu chi phí nhỏ nhất đã biết từ đầu đến từng trạng thái.
+          Tạo một tập (visited) để lưu các trạng thái đã duyệt.
+          
+        Lặp lại cho đến khi queue rỗng hoặc tìm thấy trạng thái đích:
+          Lấy trạng thái có f(n) nhỏ nhất ra khỏi priority queue.
+          Nếu trạng thái này là goal_state, truy vết ngược lại qua thuộc tính parent để lấy đường đi và trả về kết quả.
+          Nếu chưa phải goal, sinh tất cả các trạng thái con (các bước di chuyển hợp lệ).
+          Với mỗi trạng thái con:
+          Tính g(n) mới (chi phí từ đầu đến trạng thái con).
+          Tính h(n) (heuristic, thường là tổng khoảng cách Manhattan).
+          Tính f(n) = g(n) + h(n).
+          Nếu trạng thái con chưa từng duyệt, hoặc có g(n) tốt hơn trước đó, cập nhật g_scores, thêm vào queue và visited.
+        Kết thúc
+          Nếu queue rỗng mà chưa tìm thấy goal, trả về "không tìm thấy lời giải".
+      3. Giải thích các biến và cấu trúc
+        priority queue (frontier): Hàng đợi ưu tiên, luôn lấy trạng thái có f(n) nhỏ nhất để mở rộng tiếp theo.
+        g(n): Chi phí thực tế từ trạng thái đầu đến trạng thái hiện tại.
+        h(n): Heuristic (ước lượng chi phí còn lại đến đích, thường là tổng khoảng cách Manhattan).
+        f(n): Tổng chi phí dự đoán từ đầu đến đích qua trạng thái hiện tại (g(n) + h(n)).
+        g_scores: Dictionary lưu g(n) nhỏ nhất đã biết cho từng trạng thái.
+        visited: Tập hợp các trạng thái đã duyệt, giúp tránh lặp lại.
+        current_state: Trạng thái đang xét ở mỗi vòng lặp.
+        goal_state: Trạng thái đích cần tìm.
+        parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi tối ưu sau khi tìm thấy goal.
+      4. Ưu nhược điểm của A* trong 8-puzzle
+        Ưu điểm:    
+          Đảm bảo tìm ra đường đi tối ưu (ngắn nhất) nếu heuristic tốt (admissible).
+          Hiệu quả hơn BFS/UCS khi heuristic tốt, vì ưu tiên mở rộng các trạng thái gần đích.
+          Có thể điều chỉnh hiệu quả bằng cách chọn heuristic phù hợp.
+        Nhược điểm:
+          Tốn nhiều RAM nếu không gian trạng thái lớn hoặc lời giải ở xa.
+          Nếu heuristic không tốt, có thể duyệt nhiều trạng thái không cần thiết.
+          Cài đặt phức tạp hơn BFS/DFS/Greedy một chút do phải quản lý cả g(n), h(n), f(n).
   ![A Star Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/A_star.gif)
   ### IDA*
+    1. Ý tưởng tổng quát của IDA*
+      IDA* là thuật toán kết hợp giữa A* và DFS sâu dần.
+      Thay vì lưu toàn bộ các trạng thái như A*, IDA* sử dụng DFS nhưng chỉ mở rộng các trạng thái có f(n) ≤ một ngưỡng (bound) nhất định.
+      Mỗi lần lặp, ngưỡng bound sẽ tăng lên bằng giá trị f(n) nhỏ nhất vừa vượt quá bound trước đó.
+      Ưu điểm: Tiết kiệm bộ nhớ hơn A*, vẫn đảm bảo tìm được đường đi tối ưu nếu heuristic tốt.
+      Nhược điểm: Có thể duyệt lại nhiều trạng thái ở các lần lặp khác nhau (giống IDS), tổng số trạng thái duyệt có thể lớn.
+    2. Hoạt động
+    Khởi tạo
+      Tính f(n) = g(n) + h(n) cho trạng thái đầu (initial_state), đặt bound ban đầu là f(n) này.
+    Lặp lại cho đến khi tìm thấy lời giải hoặc không còn trạng thái hợp lệ:
+      Thực hiện DFS, chỉ mở rộng các trạng thái có f(n) ≤ bound hiện tại.
+      Nếu gặp trạng thái đích (goal_state) trong quá trình DFS, truy vết ngược lại qua thuộc tính parent để lấy đường đi và trả về kết quả.
+      Nếu không tìm thấy, lấy giá trị f(n) nhỏ nhất vừa vượt quá bound hiện tại, đặt làm bound mới và lặp lại.
+    Kết thúc
+      Nếu không còn trạng thái nào hợp lệ mà chưa tìm thấy goal, trả về "không tìm thấy lời giải".
+    3. Giải thích các biến và cấu trúc
+      bound: Ngưỡng f(n) tối đa cho phép ở mỗi lần lặp (ban đầu là f(initial_state)).
+      DFS stack: Ngăn xếp dùng cho DFS ở mỗi lần lặp, chỉ mở rộng trạng thái có f(n) ≤ bound.
+      f(n): Tổng chi phí dự đoán từ đầu đến đích qua trạng thái hiện tại (g(n) + h(n)).
+      g(n): Chi phí thực tế từ trạng thái đầu đến trạng thái hiện tại.
+      h(n): Heuristic (ước lượng chi phí còn lại đến đích, thường là tổng khoảng cách Manhattan).
+      min_over_bound: Giá trị f(n) nhỏ nhất vừa vượt quá bound trong lần lặp hiện tại, dùng để cập nhật bound cho lần lặp sau.
+      current_state: Trạng thái đang xét ở mỗi vòng lặp.
+      goal_state: Trạng thái đích cần tìm.
+      parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi tối ưu sau khi tìm thấy goal.
+    4. Ưu nhược điểm của IDA* trong 8-puzzle
+      Ưu điểm:
+        Tiết kiệm bộ nhớ hơn A* rất nhiều, vì chỉ cần lưu đường đi hiện tại (giống DFS).
+        Đảm bảo tìm ra đường đi tối ưu (nếu heuristic tốt).
+        Phù hợp với các bài toán có không gian trạng thái lớn mà A* không đủ RAM để chạy.
+      Nhược điểm:
+        Duyệt lại nhiều trạng thái ở các lần lặp khác nhau, tổng số trạng thái duyệt có thể lớn hơn A*.
+        Chạy chậm hơn A* nếu lời giải ở độ sâu lớn hoặc heuristic không tốt.
+        Cài đặt phức tạp hơn so với BFS/DFS/A*.
+  
   ![IDA Star Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/IDA_star.gif)
+  
   ### Simple hill climbing 
+    1. Ý tưởng tổng quát của Simple Hill Climbing
+      Simple Hill Climbing là thuật toán tìm kiếm cục bộ (local search).
+      Ở mỗi bước, thuật toán luôn chọn trạng thái láng giềng (neighbor) tốt hơn hiện tại, dựa trên giá trị heuristic (thường là tổng khoảng cách Manhattan đến đích).
+      Nếu không còn láng giềng nào tốt hơn, thuật toán dừng lại (có thể rơi vào local optimum).
+      Ưu điểm: Đơn giản, dễ cài đặt, chạy nhanh với trạng thái đầu gần đích.
+      Nhược điểm: Dễ bị kẹt ở local optimum, không đảm bảo tìm được lời giải nếu trạng thái đầu xa đích hoặc có nhiều local optimum.
+    2. Hoạt động
+      Khởi tạo
+        Đặt trạng thái hiện tại (current_state) là trạng thái đầu (initial_state).
+      Lặp lại cho đến khi gặp goal hoặc không còn neighbor tốt hơn:
+        Sinh tất cả các trạng thái láng giềng hợp lệ (neighbor).
+        Tính heuristic cho từng neighbor.
+        Nếu có neighbor nào tốt hơn (heuristic nhỏ hơn) trạng thái hiện tại:
+        Chọn neighbor tốt nhất làm trạng thái hiện tại.
+        Nếu không có neighbor nào tốt hơn, dừng lại.
+      Kết thúc
+        Nếu trạng thái hiện tại là goal, trả về đường đi.
+        Nếu không, trả về "không tìm thấy lời giải" (bị kẹt ở local optimum).
+    3. Giải thích các biến và cấu trúc
+      current_state: Trạng thái hiện tại đang xét.
+      neighbor: Các trạng thái láng giềng sinh ra từ current_state.
+      heuristic: Hàm đánh giá độ gần với trạng thái đích (thường là tổng khoảng cách Manhattan).
+      parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi nếu tìm thấy goal.
+    4. Ưu nhược điểm của Simple Hill Climbing trong 8-puzzle
+      Ưu điểm:
+        Cài đặt rất đơn giản, dễ hiểu.
+        Chạy rất nhanh với trạng thái đầu gần đích hoặc ít local optimum.
+        Tiết kiệm bộ nhớ (chỉ cần lưu trạng thái hiện tại và neighbor).
+      Nhược điểm:
+        Dễ bị kẹt ở local optimum (trạng thái không phải goal nhưng không có neighbor nào tốt hơn).
+        Không đảm bảo tìm được lời giải, đặc biệt với trạng thái đầu xa đích.
+        Có thể phải chạy lại nhiều lần với trạng thái đầu khác nhau (random restart) để tăng khả năng thành công.
+
+  ![Simple Hill Climbing Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/simple_cimb.gif)
+  
   ### Stochastic Hill climbing
+    1. Ý tưởng tổng quát của Stochastic Hill Climbing
+      Stochastic Hill Climbing là một biến thể của thuật toán leo đồi (hill climbing).
+      Thay vì luôn chọn neighbor tốt nhất (giống Simple/Steepest), thuật toán này chọn ngẫu nhiên một neighbor nào đó tốt hơn trạng thái hiện tại.
+      Điều này giúp thuật toán có cơ hội thoát khỏi local optimum nhỏ (do không luôn chọn hướng tốt nhất mà chọn ngẫu nhiên trong các hướng tốt hơn).
+      Ưu điểm: Giảm khả năng bị kẹt ở local optimum so với Simple Hill Climbing.
+      Nhược điểm: Vẫn có thể bị kẹt nếu tất cả neighbor đều không tốt hơn, và không đảm bảo tìm được lời giải.
+    2. Hoạt động
+      Khởi tạo
+        Đặt trạng thái hiện tại (current_state) là trạng thái đầu (initial_state).
+      Lặp lại cho đến khi gặp goal hoặc không còn neighbor tốt hơn:
+        Sinh tất cả các trạng thái láng giềng hợp lệ (neighbor).
+        Chọn ra các neighbor có heuristic tốt hơn trạng thái hiện tại.
+        Nếu có ít nhất một neighbor tốt hơn:
+        Chọn ngẫu nhiên một trong số các neighbor tốt hơn này làm trạng thái hiện tại.
+        Nếu không có neighbor nào tốt hơn, dừng lại.
+      Kết thúc
+        Nếu trạng thái hiện tại là goal, trả về đường đi.
+        Nếu không, trả về "không tìm thấy lời giải" (bị kẹt ở local optimum).
+    3. Giải thích các biến và cấu trúc
+      current_state: Trạng thái hiện tại đang xét.
+      neighbor: Các trạng thái láng giềng sinh ra từ current_state.
+      better_neighbors: Danh sách neighbor có heuristic tốt hơn current_state.
+      heuristic: Hàm đánh giá độ gần với trạng thái đích (thường là tổng khoảng cách Manhattan).
+      parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi nếu tìm thấy goal.
+    4. Ưu nhược điểm của Stochastic Hill Climbing trong 8-puzzle
+      Ưu điểm:
+        Đơn giản, dễ cài đặt.
+        Có khả năng thoát khỏi một số local optimum nhỏ nhờ chọn ngẫu nhiên.
+        Tiết kiệm bộ nhớ, chỉ cần lưu trạng thái hiện tại và neighbor.
+      Nhược điểm:
+        Vẫn có thể bị kẹt ở local optimum nếu không còn neighbor tốt hơn.
+        Không đảm bảo tìm được lời giải, đặc biệt với trạng thái đầu xa đích hoặc có nhiều local optimum lớn.
+        Đường đi có thể không tối ưu (không ngắn nhất).
+        
   ![Stochastic Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/stochastic.gif)
-  ### Stepest Ascent hill climbing
+  
+  ### Steepest Ascent hill climbing
+    1. Ý tưởng tổng quát của Steepest Ascent Hill Climbing
+      Steepest Ascent Hill Climbing là một biến thể của thuật toán leo đồi (hill climbing).
+      Ở mỗi bước, thuật toán xét tất cả các trạng thái láng giềng (neighbor) của trạng thái hiện tại và luôn chọn neighbor có giá trị heuristic tốt nhất (nhỏ nhất) để chuyển sang.
+      Nếu không có neighbor nào tốt hơn trạng thái hiện tại, thuật toán dừng lại (bị kẹt ở local optimum).
+      Ưu điểm: Luôn chọn hướng cải thiện tốt nhất, giúp tăng tốc độ hội tụ đến cực trị cục bộ.
+      Nhược điểm: Dễ bị kẹt ở local optimum, không đảm bảo tìm được lời giải nếu trạng thái đầu xa đích hoặc có nhiều local optimum.
+    2. Hoạt động
+      Khởi tạo
+        Đặt trạng thái hiện tại (current_state) là trạng thái đầu (initial_state).
+      Lặp lại cho đến khi gặp goal hoặc không còn neighbor tốt hơn:
+        Sinh tất cả các trạng thái láng giềng hợp lệ (neighbor).
+        Tính heuristic cho từng neighbor.
+        Tìm neighbor có heuristic tốt nhất (nhỏ nhất).
+        Nếu heuristic của neighbor tốt nhất nhỏ hơn trạng thái hiện tại:
+        Chuyển sang neighbor tốt nhất đó.
+        Nếu không có neighbor nào tốt hơn, dừng lại.
+      Kết thúc
+        Nếu trạng thái hiện tại là goal, trả về đường đi.
+        Nếu không, trả về "không tìm thấy lời giải" (bị kẹt ở local optimum).
+    3. Giải thích các biến và cấu trúc
+      current_state: Trạng thái hiện tại đang xét.
+      neighbor: Các trạng thái láng giềng sinh ra từ current_state.
+      best_neighbor: Neighbor có giá trị heuristic tốt nhất.
+      heuristic: Hàm đánh giá độ gần với trạng thái đích (thường là tổng khoảng cách Manhattan).
+      parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi nếu tìm thấy goal.
+    4. Ưu nhược điểm của Steepest Ascent Hill Climbing trong 8-puzzle
+      Ưu điểm:
+        Luôn chọn hướng cải thiện tốt nhất, giúp tối ưu hóa nhanh hơn Simple Hill Climbing.
+        Cài đặt đơn giản, dễ hiểu.
+        Tiết kiệm bộ nhớ (chỉ cần lưu trạng thái hiện tại và neighbor).
+      Nhược điểm:
+        Rất dễ bị kẹt ở local optimum (trạng thái không phải goal nhưng không có neighbor nào tốt hơn).
+        Không đảm bảo tìm được lời giải, đặc biệt với trạng thái đầu xa đích hoặc nhiều local optimum.
+        Đường đi có thể không ngắn nhất
+
+  ### Simulated Anealling
+  
+  ![Simulated Annealing Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/anealing.gif)
   
   ### Beam Search
+    1. Ý tưởng tổng quát của Beam Search
+      Beam Search là thuật toán tìm kiếm heuristic, kết hợp giữa BFS và Greedy.
+      Ở mỗi bước, thuật toán chỉ giữ lại một số lượng giới hạn các trạng thái tốt nhất ( khoảng cách Manhattan đến đích) : là "beam width".
+      Điều này giúp giảm bùng nổ trạng thái như BFS, nhưng vẫn ưu tiên các trạng thái gần đích hơn.
+      Ưu điểm: Tốc độ nhanh, tiết kiệm bộ nhớ hơn BFS, dễ kiểm soát độ rộng tìm kiếm.
+      Nhược điểm: Không đảm bảo tìm được lời giải, có thể bỏ lỡ lời giải nếu beam width quá nhỏ.
+    2. Hoạt động
+      Khởi tạo
+        Đặt current_beam là danh sách chỉ chứa trạng thái đầu (initial_state).
+      Lặp lại cho đến khi tìm thấy goal hoặc hết bước (max_steps):
+        Với mỗi trạng thái trong current_beam, sinh tất cả neighbor (trạng thái con hợp lệ).
+        Tính heuristic cho từng neighbor.
+        Gom tất cả neighbor vào một danh sách next_beam.
+        Sắp xếp next_beam theo heuristic tăng dần, chỉ giữ lại beam_width trạng thái tốt nhất cho bước tiếp theo.
+        Nếu trong next_beam có trạng thái là goal, trả về đường đi.
+      Gán current_beam = next_beam và lặp lại.
+      Kết thúc
+        Nếu sau số bước tối đa vẫn chưa tìm thấy goal, trả về "không tìm thấy lời giải".
+    3. Giải thích các biến và cấu trúc
+      beam_width: Số lượng trạng thái tối đa giữ lại ở mỗi bước (quyết định độ rộng tìm kiếm).
+      current_beam: Danh sách các trạng thái hiện tại đang xét ở mỗi bước.
+      next_beam: Danh sách các trạng thái sinh ra từ current_beam, sẽ được chọn lọc cho bước tiếp theo.
+      heuristic: Hàm đánh giá độ gần với trạng thái đích (thường là tổng khoảng cách Manhattan).
+      visited: Tập hợp các trạng thái đã duyệt, giúp tránh lặp lại.
+      parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi nếu tìm thấy goal.
+    4. Ưu nhược điểm của Beam Search trong 8-puzzle
+      Ưu điểm:
+        Tốc độ nhanh, tiết kiệm bộ nhớ hơn BFS vì chỉ giữ lại một số trạng thái tốt nhất.
+        Dễ điều chỉnh độ rộng tìm kiếm bằng cách thay đổi beam_width.
+        Có thể tìm ra lời giải nhanh nếu beam_width đủ lớn và heuristic tốt.
+      Nhược điểm:
+        Không đảm bảo tìm được lời giải (có thể bị bỏ lỡ lời giải nếu beam_width quá nhỏ).
+        Đường đi có thể không ngắn nhất
+        Phụ thuộc mạnh vào giá trị beam_width và chất lượng heuristic.
   ![Beam Search Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/beam_search.gif)
+  
   ### And or 
+    1. Ý tưởng tổng quát của Simulated Annealing
+      Simulated Annealing là thuật toán tìm kiếm cục bộ (local search), được lấy ý tưởng từ quá trình ủ nhiệt luyện kim.
+      Ở mỗi bước, thuật toán có thể chấp nhận chuyển sang trạng thái xấu hơn (heuristic cao hơn) với một xác suất nhất định, xác suất này giảm dần theo nhiệt độ.
+      Khi nhiệt độ cao, thuật toán dễ chấp nhận trạng thái xấu hơn (giúp thoát local optimum); khi nhiệt độ thấp, thuật toán gần như giống hill climbing.
+      Ưu điểm: Có thể thoát khỏi local optimum, tăng khả năng tìm được lời giải toàn cục.
+      Nhược điểm: Không đảm bảo tìm được lời giải, phụ thuộc vào tham số nhiệt độ và tốc độ làm nguội.
+    2. Hoạt động
+      Khởi tạo
+        Đặt trạng thái hiện tại (current_state) là trạng thái đầu (initial_state).
+        Đặt nhiệt độ ban đầu (temp) và hệ số làm nguội (cooling_rate).
+      Lặp lại cho đến khi gặp goal, nhiệt độ gần 0 hoặc hết bước:
+        Sinh ngẫu nhiên một trạng thái láng giềng hợp lệ (neighbor).
+        Tính heuristic của neighbor và current_state.
+        Nếu neighbor tốt hơn (heuristic thấp hơn), chuyển sang neighbor.
+        Nếu neighbor xấu hơn, chuyển sang neighbor với xác suất:
+            P = exp(-(delta_energy) / temp)
+            (delta_energy = heuristic(neighbor) - heuristic(current_state))
+             Giảm nhiệt độ: temp = temp * cooling_rate.
+      Kết thúc
+      Nếu trạng thái hiện tại là goal, trả về đường đi.
+      Nếu không, trả về "không tìm thấy lời giải" (bị kẹt hoặc hết nhiệt độ).
+    3. Giải thích các biến và cấu trúc
+      current_state: Trạng thái hiện tại đang xét.
+      neighbor: Trạng thái láng giềng được chọn ngẫu nhiên.
+      heuristic: Hàm đánh giá độ gần với trạng thái đích (thường là tổng khoảng cách Manhattan).
+      temp (temperature): Nhiệt độ hiện tại, quyết định xác suất chấp nhận trạng thái xấu hơn.
+      cooling_rate: Tốc độ làm nguội (thường nhỏ hơn 1, ví dụ 0.99).
+      delta_energy: Hiệu heuristic giữa neighbor và current_state.
+      parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi nếu tìm thấy goal.
+    4. Ưu nhược điểm của Simulated Annealing trong 8-puzzle
+    Ưu điểm:
+      Có khả năng thoát khỏi local optimum nhờ cơ chế chấp nhận trạng thái xấu hơn.
+      Phù hợp cho các bài toán có nhiều local optimum, trạng thái đầu xa đích.
+      Tiết kiệm bộ nhớ, chỉ cần lưu trạng thái hiện tại và neighbor.
+    Nhược điểm:
+      Không đảm bảo tìm được lời giải (có thể hết nhiệt độ trước khi tới goal).
+      Kết quả phụ thuộc mạnh vào tham số (nhiệt độ ban đầu, cooling_rate, số bước).
+      Đường đi thường không ngắn nhất.
+
+    
   ![And-Or Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/and-or.gif)
   ### Partially Observable ( Nhìn thấy 1 phần )
   ![Nhìn thay 1 phần Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Nh%C3%ACn_thay_1_phan.gif)
