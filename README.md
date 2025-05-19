@@ -1,6 +1,6 @@
 # AI_8Puzzle
-1. Mục tiêu
-  1.1. Nhóm thuật toán
+## 1. Mục tiêu
+  ### 1.1. Nhóm thuật toán
     Gồm 6 nhóm thuật toán :
       Tìm kiếm không có thông tin: BFS, DFS, IDS, UCS.
       Tìm kiếm có thông tin: Greedy Best-First Search, A*, IDA*
