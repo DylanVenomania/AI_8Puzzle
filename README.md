@@ -93,7 +93,8 @@
       current_state: Trạng thái đang xét ở mỗi vòng lặp.
       goal_state: Trạng thái đích cần tìm.
       parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi ngắn nhất sau khi tìm thấy goal.
-    https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/bfs.gif
+  
+  https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/bfs.gif
 
     
    
