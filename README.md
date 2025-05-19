@@ -57,9 +57,7 @@
     Thành phần chính:
       Class PuzzleGUI: Quản lý toàn bộ giao diện, sự kiện, cập nhật trạng thái.
       Các hàm callback: Xử lý sự kiện nhấn nút, nhập dữ liệu, cập nhật bảng.
-  ### 2.4 File: requirements.txt
-    Chức năng: Liệt kê các thư viện cần thiết để chạy project, ví dụ: numpy, tkinter, heapq, collections, ...
-  ### 2.5 Các thành phần khác
+  ### 2.4 Các thành phần khác
     README.md:  mô tả project, ví dụ, giải thích thuật toán.
     Người dùng nhập trạng thái đầu/cuối qua GUI hoặc code.
     Chọn thuật toán muốn giải 
@@ -526,11 +524,149 @@
       Không đảm bảo tìm được lời giải (có thể hết nhiệt độ trước khi tới goal).
       Kết quả phụ thuộc mạnh vào tham số (nhiệt độ ban đầu, cooling_rate, số bước).
       Đường đi thường không ngắn nhất.
-
-    
+      
   ![And-Or Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/and-or.gif)
+
+  ### Genetic
+    1. Ý tưởng tổng quát của Genetic Algorithm
+      Genetic Algorithm (GA) là thuật toán tối ưu hóa lấy cảm hứng từ tiến hóa sinh học tự nhiên.
+      Mỗi cá thể (individual) đại diện cho một lời giải tiềm năng (thường là một hoán vị các số 0-8 cho 8-puzzle).
+      Quần thể (population) gồm nhiều cá thể, qua các thế hệ sẽ được chọn lọc, lai ghép (crossover), đột biến (mutation) để tạo ra các cá thể tốt hơn.
+      Ưu điểm: Có thể tìm ra lời giải trong không gian trạng thái rất lớn, dễ mở rộng cho các bài toán phức tạp.
+      Nhược điểm: Không đảm bảo tìm được lời giải tối ưu, kết quả phụ thuộc vào tham số và cách mã hóa lời giải.
+    2. Hoạt động
+      Khởi tạo
+        Sinh ngẫu nhiên một quần thể các cá thể (population), mỗi cá thể là một hoán vị hợp lệ của các số trong 8-puzzle.
+      Lặp lại qua các thế hệ (generations):
+        Đánh giá (Evaluation): Tính fitness (thường là tổng khoảng cách Manhattan đến goal) cho từng cá thể.
+        Chọn lọc (Selection): Chọn ra các cá thể tốt nhất (elite) để giữ lại, hoặc chọn ngẫu nhiên theo xác suất tỉ lệ nghịch với fitness.
+        Lai ghép (Crossover): Kết hợp hai cá thể cha mẹ để tạo ra cá thể con (thường dùng order crossover).
+        Đột biến (Mutation): Thay đổi ngẫu nhiên một phần nhỏ của cá thể (ví dụ hoán đổi vị trí hai số) với xác suất mutation_rate.
+        Thay thế: Tạo quần thể mới từ các cá thể con và elite.
+      Kết thúc
+        Nếu có cá thể đạt fitness = 0 (giống goal), hoặc hết số thế hệ, dừng lại.
+        Dùng thuật toán tìm kiếm (ví dụ A*) để tìm đường đi thật sự từ initial_state đến cá thể tốt nhất (nếu cần).
+    3. Giải thích các biến và cấu trúc
+      population: Danh sách các cá thể (mỗi cá thể là một hoán vị các số 0-8).
+      individual: Một lời giải tiềm năng (một cá thể).
+      fitness: Giá trị đánh giá chất lượng cá thể (thường là tổng khoảng cách Manhattan đến goal).
+      elite_size: Số cá thể tốt nhất giữ lại qua mỗi thế hệ.
+      mutation_rate: Xác suất đột biến một cá thể.
+      generations: Số thế hệ tiến hóa.
+      crossover: Hàm lai ghép hai cá thể cha mẹ để tạo ra cá thể con.
+      mutation: Hàm đột biến cá thể.
+      goal_state: Trạng thái đích cần đạt được.
+    4. Ưu nhược điểm của Genetic Algorithm trong 8-puzzle
+      Ưu điểm:
+        Có thể tìm ra lời giải trong không gian trạng thái lớn, kể cả khi các thuật toán truyền thống gặp khó.
+        Dễ mở rộng cho các bài toán phức tạp hơn 8-puzzle.
+        Có thể vượt qua local optimum nhờ đột biến và lai ghép.
+      Nhược điểm:
+        Không đảm bảo tìm được lời giải tối ưu (có thể chỉ tìm được lời giải gần đúng).
+        Kết quả phụ thuộc mạnh vào tham số (population size, mutation rate, generations, ...).
+        Tốc độ chậm hơn các thuật toán heuristic nếu chỉ giải các bài toán nhỏ.
+        Đường đi tìm được thường không ngắn nhất, cần kết hợp với thuật toán khác (A*) để tối ưu hóa đường đi cuối cùng.
+
+![Genetic Algorithm Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/genetic.gif)
+        
   ### Partially Observable ( Nhìn thấy 1 phần )
+    1. Ý tưởng tổng quát của AND-OR Search
+      AND-OR Search là thuật toán tìm kiếm được sử dụng cho các bài toán có cấu trúc phân rã mục tiêu thành các mục tiêu con (AND) hoặc có nhiều lựa chọn (OR).
+      Trong cây tìm kiếm:
+        nút OR: Có nhiều lựa chọn, chỉ cần một nhánh thành công là đủ (giống như các thuật toán tìm kiếm truyền thống).
+        nút AND : Phải giải quyết thành công tất cả các nhánh con mới thành công (dùng cho các bài toán phân rã thành nhiều mục tiêu con đồng thời).
+      Trong 8-puzzle, AND-OR Search thường dùng để mô phỏng các bài toán phức tạp hơn, hoặc các tình huống có nhiều mục tiêu con, hoặc môi trường không xác định.
+      Ưu điểm: Có thể giải quyết các bài toán với cấu trúc mục tiêu phức tạp, nhiều điều kiện rẽ nhánh.
+      Nhược điểm: Bùng nổ trạng thái rất lớn, tốn bộ nhớ, ít dùng cho 8-puzzle chuẩn.
+    2. Hoạt động
+      Khởi tạo
+        Bắt đầu từ trạng thái đầu (initial_state).
+      Đệ quy mở rộng trạng thái:
+        Nếu trạng thái hiện tại là goal, trả về thành công.
+        Nếu là nút OR:
+          Thử từng hành động hợp lệ, nếu có ít nhất một nhánh con thành công thì node này thành công.
+        Nếu là nút AND:
+          Phải giải quyết thành công tất cả các nhánh con (tức là tất cả hành động hoặc mục tiêu con đều phải thành công).
+          Dùng memoization để lưu lại kết quả các trạng thái đã duyệt, tránh lặp lại.
+      Kết thúc
+        Nếu giải được toàn bộ cây AND-OR, trả về lời giải; nếu không, trả về thất bại.
+    3. Giải thích các biến và cấu trúc
+      AND node: Node yêu cầu giải quyết đồng thời nhiều mục tiêu con.
+      OR node: Node chỉ cần một nhánh con thành công.
+      memo: Bộ nhớ lưu kết quả các trạng thái đã duyệt để tránh lặp lại (memoization).
+      current_state: Trạng thái hiện tại đang xét.
+      goal_state: Trạng thái đích cần tìm.
+      max_depth, max_memory: Giới hạn độ sâu và bộ nhớ để tránh bùng nổ trạng thái.
+      parent: Lưu trạng thái cha để truy vết đường đi nếu cần.
+    4. Ưu nhược điểm của AND-OR Search trong 8-puzzle
+      Ưu điểm:    
+        Có thể giải quyết các bài toán với nhiều mục tiêu con hoặc điều kiện rẽ nhánh phức tạp.
+        Phù hợp với các bài toán trong môi trường không xác định, đa tác nhân, hoặc cần phân rã mục tiêu.
+      Nhược điểm:
+        Bùng nổ trạng thái rất lớn, tốn nhiều bộ nhớ và thời gian --> Khiến luôn không giải được trong thuật toán 8 Puzzle do quá là nhiều trạng thái
+        Không thực tế cho 8-puzzle chuẩn (vì thường chỉ có một mục tiêu duy nhất).
+        Cài đặt phức tạp hơn các thuật toán tìm kiếm truyền thống.
   ![Nhìn thay 1 phần Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Nh%C3%ACn_thay_1_phan.gif)
+
+  ### Dynamic Environment ( Môi trường động ) - thay thế cho Belief State 
+    1. Belief State là gì?
+      Belief State là tập hợp các trạng thái có thể xảy ra của hệ thống khi agent không biết chính xác trạng thái thật (do thiếu thông tin hoặc môi trường không xác định).
+      Trong 8-puzzle, belief state thường dùng khi agent không quan sát được toàn bộ bảng (partially observable), hoặc có sự không chắc chắn về vị trí các ô.
+    2. Dynamic Environment là gì?
+      Dynamic Environment (môi trường động) là môi trường mà trạng thái có thể thay đổi do tác động bên ngoài hoặc do bản thân môi trường (không chỉ do hành động của agent).
+      Trong project, class như DynamicPuzzleEnvironment mô phỏng trạng thái có thể thay đổi, cập nhật tự động, hoặc agent phải thích nghi với sự thay đổi này.
+    3. Lý do thay thế Belief State bằng Dynamic Environment
+      Tuy nhiên, việc cài đặt belief state đúng chuẩn (tức là duy trì một tập hợp các trạng thái có thể xảy ra, cập nhật sau mỗi quan sát/hành động) khá phức tạp và không trực quan cho 8-puzzle, và cũng thực hiện không thành công.
+    Khi chuyển sang mô hình Dynamic Environment thì có thể :
+      Mô phỏng các trường hợp trạng thái thật thay đổi ngoài ý muốn (ví dụ: ai đó thay đổi bảng, hoặc có yếu tố ngẫu nhiên).
+      Kết hợp với các hàm cập nhật belief (ví dụ: update_belief, apply_move) để quản lý tập hợp các trạng thái có thể xảy ra.
+      Cho phép agent thích nghi với sự thay đổi, kiểm thử thuật toán trong môi trường không tĩnh, phù hợp với các bài toán nâng cao hơn.
+    Ưu điểm của Dynamic Environment so với Belief State :
+      Dễ cài đặt hơn: Bạn chỉ cần quản lý trạng thái hiện tại và cập nhật khi có thay đổi, thay vì phải duy trì và cập nhật một tập hợp lớn các belief states.
+      Linh hoạt hơn: Có thể mô phỏng nhiều trường hợp thực tế hơn, như trạng thái bị thay đổi bởi tác nhân ngoài, hoặc trạng thái đích thay đổi động.
+      Tích hợp tốt với GUI: Người dùng có thể trực tiếp thay đổi trạng thái, kiểm thử các thuật toán trong môi trường động.
+    4. Kết luận
+      Dynamic Environment là một cách tiếp cận thực tế, linh hoạt, giúp mô phỏng các tình huống phức tạp hơn cho bài toán 8-puzzle.
+      Việc thay thế này giúp code dễ bảo trì, kiểm thử, và mở rộng cho các bài toán thực tế hoặc các môi trường nâng cao.
+  ![Dynamic Programming Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/dynamic.gif)
   ### Back tracking 
+    1. Ý tưởng tổng quát của Backtracking
+      Backtracking là thuật toán thử - sai, xây dựng lời giải từng bước một, nếu phát hiện không thể tiếp tục thì quay lui về bước trước để thử hướng khác.
+      Trong 8-puzzle (dưới dạng CSP), mỗi vị trí trên bảng là một biến, giá trị là các số từ 0-8, ràng buộc là không trùng số và đúng cấu hình đích.
+      Ưu điểm: Đảm bảo tìm được lời giải nếu tồn tại, cài đặt đơn giản, dễ hiểu.
+      Nhược điểm: Tốc độ chậm, dễ bị bùng nổ trạng thái nếu không tối ưu hóa kiểm tra ràng buộc.
+    2. Hoạt động
+      Khởi tạo
+        Xác định tập biến (các vị trí trên bảng), domain (các giá trị có thể gán cho từng biến), assignment (gán giá trị cho biến).
+      Lặp lại cho đến khi gán hết biến hoặc không còn giá trị hợp lệ:
+        Chọn một biến chưa gán giá trị.
+        Thử từng giá trị trong domain của biến đó:
+        Gán giá trị cho biến.
+        Kiểm tra ràng buộc (không trùng số, hợp lệ với goal_state...).
+        Nếu hợp lệ, tiếp tục gán biến tiếp theo (đệ quy).
+        Nếu không hợp lệ hoặc không tìm được lời giải ở nhánh này, quay lui (bỏ gán giá trị vừa thử và thử giá trị khác).
+        Nếu đã gán hết biến và assignment thỏa mãn tất cả ràng buộc, trả về lời giải.
+    Kết thúc
+      Nếu thử hết các khả năng mà không tìm được assignment hợp lệ, trả về "không tìm thấy lời giải".
+    3. Giải thích các biến và cấu trúc
+      variables: Danh sách các biến (vị trí trên bảng 8-puzzle).
+      domains: Domain các giá trị có thể gán cho từng biến (thường là 0-8, loại bỏ các giá trị đã gán ở các biến trước).
+      assignment: Dictionary lưu giá trị đã gán cho từng biến.
+      goal_state: Trạng thái đích cần đạt được.
+      check_constraints: Hàm kiểm tra ràng buộc (không trùng số, đúng cấu hình...).
+      backtrack: Hàm đệ quy thực hiện quá trình thử - sai và quay lui.
+    4. Ưu nhược điểm của Backtracking trong 8-puzzle
+    Ưu điểm:
+      Đảm bảo tìm được lời giải nếu tồn tại (nếu không bị giới hạn thời gian/bộ nhớ).
+      Cài đặt đơn giản, dễ hiểu.
+      Linh hoạt, có thể kết hợp với các kỹ thuật tối ưu hóa khác (Forward Checking, AC-3...).
+    Nhược điểm:    
+      Rất chậm với không gian trạng thái lớn, dễ bị bùng nổ trạng thái.
+      Không phù hợp để giải 8-puzzle với trạng thái đầu xa đích hoặc cấu hình phức tạp.
+      Hiệu quả phụ thuộc mạnh vào thứ tự gán biến và kiểm tra ràng buộc.
   ![Backtrack Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/backtrack.gif)
+
+  ### Forward Checking
+  ### AC3
+  ### Q Learning
     
