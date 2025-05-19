@@ -141,7 +141,7 @@
 
    ![DFS Animation for 8 Puzzle](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/dfs.gif)
 
-  ### UCS
+  #### UCS
     1. Ý tưởng tổng quát của UCS
       UCS là thuật toán tìm kiếm theo chi phí đều (Uniform Cost Search).
       UCS luôn mở rộng trạng thái có tổng chi phí nhỏ nhất từ trạng thái đầu đến trạng thái hiện tại (cost g(n)), không quan tâm đến heuristic.
@@ -180,7 +180,7 @@
         Không tận dụng được thông tin heuristic nên có thể chậm hơn A* trong nhiều trường hợp.
   ![UCS Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/ucs.gif)
   
-  ### IDS
+  #### IDS
     1. Ý tưởng tổng quát của IDS
       IDS là thuật toán tìm kiếm sâu dần (Iterative Deepening Search).
       IDS kết hợp ưu điểm của DFS (tiết kiệm bộ nhớ) và BFS (tìm đường đi ngắn nhất).
@@ -215,7 +215,7 @@
       Không phù hợp với bài toán có không gian trạng thái quá lớn hoặc độ sâu lời giải quá lớn.
   ![IDS Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/ids.gif)
   
-  ### Greedy
+  #### Greedy
     1. Ý tưởng tổng quát của Greedy
         Greedy Best-First Search là thuật toán tìm kiếm theo hướng tham lam.
         Ở mỗi bước, thuật toán luôn chọn trạng thái có giá trị heuristic nhỏ nhất (dùng khoảng cách Manhattan).
@@ -252,7 +252,7 @@
         Có thể bị kẹt ở local optimum (trạng thái tưởng là tốt nhất nhưng không dẫn đến đích).
         
   ![Greedy Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/greedy.gif)
-  ### A*
+  #### A*
     1. Ý tưởng tổng quát của A*
         A* là thuật toán tìm kiếm kết hợp giữa chi phí thực tế đã đi (g(n)) và ước lượng chi phí còn lại đến đích (h(n)), theo công thức:
         f(n) = g(n) + h(n)
@@ -297,7 +297,7 @@
           Nếu heuristic không tốt, có thể duyệt nhiều trạng thái không cần thiết.
           Cài đặt phức tạp hơn BFS/DFS/Greedy một chút do phải quản lý cả g(n), h(n), f(n).
   ![A Star Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/A_star.gif)
-  ### IDA*
+  #### IDA*
     1. Ý tưởng tổng quát của IDA*
       IDA* là thuật toán kết hợp giữa A* và DFS sâu dần.
       Thay vì lưu toàn bộ các trạng thái như A*, IDA* sử dụng DFS nhưng chỉ mở rộng các trạng thái có f(n) ≤ một ngưỡng (bound) nhất định.
@@ -335,7 +335,7 @@
   
   ![IDA Star Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/IDA_star.gif)
   
-  ### Simple hill climbing 
+  #### Simple hill climbing 
     1. Ý tưởng tổng quát của Simple Hill Climbing
       Simple Hill Climbing là thuật toán tìm kiếm cục bộ (local search).
       Ở mỗi bước, thuật toán luôn chọn trạng thái láng giềng (neighbor) tốt hơn hiện tại, dựa trên giá trị heuristic (thường là tổng khoảng cách Manhattan đến đích).
@@ -371,7 +371,7 @@
 
   ![Simple Hill Climbing Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/simple_cimb.gif)
   
-  ### Stochastic Hill climbing
+  #### Stochastic Hill climbing
     1. Ý tưởng tổng quát của Stochastic Hill Climbing
       Stochastic Hill Climbing là một biến thể của thuật toán leo đồi (hill climbing).
       Thay vì luôn chọn neighbor tốt nhất (giống Simple/Steepest), thuật toán này chọn ngẫu nhiên một neighbor nào đó tốt hơn trạng thái hiện tại.
@@ -408,7 +408,7 @@
         
   ![Stochastic Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/stochastic.gif)
   
-  ### Steepest Ascent hill climbing
+  #### Steepest Ascent hill climbing
     1. Ý tưởng tổng quát của Steepest Ascent Hill Climbing
       Steepest Ascent Hill Climbing là một biến thể của thuật toán leo đồi (hill climbing).
       Ở mỗi bước, thuật toán xét tất cả các trạng thái láng giềng (neighbor) của trạng thái hiện tại và luôn chọn neighbor có giá trị heuristic tốt nhất (nhỏ nhất) để chuyển sang.
@@ -444,49 +444,8 @@
         Không đảm bảo tìm được lời giải, đặc biệt với trạng thái đầu xa đích hoặc nhiều local optimum.
         Đường đi có thể không ngắn nhất
 
-  ### Simulated Anealling
-  
-  ![Simulated Annealing Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/anealing.gif)
-  
-  ### Beam Search
-    1. Ý tưởng tổng quát của Beam Search
-      Beam Search là thuật toán tìm kiếm heuristic, kết hợp giữa BFS và Greedy.
-      Ở mỗi bước, thuật toán chỉ giữ lại một số lượng giới hạn các trạng thái tốt nhất ( khoảng cách Manhattan đến đích) : là "beam width".
-      Điều này giúp giảm bùng nổ trạng thái như BFS, nhưng vẫn ưu tiên các trạng thái gần đích hơn.
-      Ưu điểm: Tốc độ nhanh, tiết kiệm bộ nhớ hơn BFS, dễ kiểm soát độ rộng tìm kiếm.
-      Nhược điểm: Không đảm bảo tìm được lời giải, có thể bỏ lỡ lời giải nếu beam width quá nhỏ.
-    2. Hoạt động
-      Khởi tạo
-        Đặt current_beam là danh sách chỉ chứa trạng thái đầu (initial_state).
-      Lặp lại cho đến khi tìm thấy goal hoặc hết bước (max_steps):
-        Với mỗi trạng thái trong current_beam, sinh tất cả neighbor (trạng thái con hợp lệ).
-        Tính heuristic cho từng neighbor.
-        Gom tất cả neighbor vào một danh sách next_beam.
-        Sắp xếp next_beam theo heuristic tăng dần, chỉ giữ lại beam_width trạng thái tốt nhất cho bước tiếp theo.
-        Nếu trong next_beam có trạng thái là goal, trả về đường đi.
-      Gán current_beam = next_beam và lặp lại.
-      Kết thúc
-        Nếu sau số bước tối đa vẫn chưa tìm thấy goal, trả về "không tìm thấy lời giải".
-    3. Giải thích các biến và cấu trúc
-      beam_width: Số lượng trạng thái tối đa giữ lại ở mỗi bước (quyết định độ rộng tìm kiếm).
-      current_beam: Danh sách các trạng thái hiện tại đang xét ở mỗi bước.
-      next_beam: Danh sách các trạng thái sinh ra từ current_beam, sẽ được chọn lọc cho bước tiếp theo.
-      heuristic: Hàm đánh giá độ gần với trạng thái đích (thường là tổng khoảng cách Manhattan).
-      visited: Tập hợp các trạng thái đã duyệt, giúp tránh lặp lại.
-      parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi nếu tìm thấy goal.
-    4. Ưu nhược điểm của Beam Search trong 8-puzzle
-      Ưu điểm:
-        Tốc độ nhanh, tiết kiệm bộ nhớ hơn BFS vì chỉ giữ lại một số trạng thái tốt nhất.
-        Dễ điều chỉnh độ rộng tìm kiếm bằng cách thay đổi beam_width.
-        Có thể tìm ra lời giải nhanh nếu beam_width đủ lớn và heuristic tốt.
-      Nhược điểm:
-        Không đảm bảo tìm được lời giải (có thể bị bỏ lỡ lời giải nếu beam_width quá nhỏ).
-        Đường đi có thể không ngắn nhất
-        Phụ thuộc mạnh vào giá trị beam_width và chất lượng heuristic.
-  ![Beam Search Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/beam_search.gif)
-  
-  ### And or 
-    1. Ý tưởng tổng quát của Simulated Annealing
+  #### Simulated Anealling
+      1. Ý tưởng tổng quát của Simulated Annealing
       Simulated Annealing là thuật toán tìm kiếm cục bộ (local search), được lấy ý tưởng từ quá trình ủ nhiệt luyện kim.
       Ở mỗi bước, thuật toán có thể chấp nhận chuyển sang trạng thái xấu hơn (heuristic cao hơn) với một xác suất nhất định, xác suất này giảm dần theo nhiệt độ.
       Khi nhiệt độ cao, thuật toán dễ chấp nhận trạng thái xấu hơn (giúp thoát local optimum); khi nhiệt độ thấp, thuật toán gần như giống hill climbing.
@@ -524,10 +483,61 @@
       Không đảm bảo tìm được lời giải (có thể hết nhiệt độ trước khi tới goal).
       Kết quả phụ thuộc mạnh vào tham số (nhiệt độ ban đầu, cooling_rate, số bước).
       Đường đi thường không ngắn nhất.
-      
+  ![Simulated Annealing Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/anealing.gif)
+  
+  #### Beam Search
+    1. Ý tưởng tổng quát của Beam Search
+      Beam Search là thuật toán tìm kiếm heuristic, kết hợp giữa BFS và Greedy.
+      Ở mỗi bước, thuật toán chỉ giữ lại một số lượng giới hạn các trạng thái tốt nhất ( khoảng cách Manhattan đến đích) : là "beam width".
+      Điều này giúp giảm bùng nổ trạng thái như BFS, nhưng vẫn ưu tiên các trạng thái gần đích hơn.
+      Ưu điểm: Tốc độ nhanh, tiết kiệm bộ nhớ hơn BFS, dễ kiểm soát độ rộng tìm kiếm.
+      Nhược điểm: Không đảm bảo tìm được lời giải, có thể bỏ lỡ lời giải nếu beam width quá nhỏ.
+    2. Hoạt động
+      Khởi tạo
+        Đặt current_beam là danh sách chỉ chứa trạng thái đầu (initial_state).
+      Lặp lại cho đến khi tìm thấy goal hoặc hết bước (max_steps):
+        Với mỗi trạng thái trong current_beam, sinh tất cả neighbor (trạng thái con hợp lệ).
+        Tính heuristic cho từng neighbor.
+        Gom tất cả neighbor vào một danh sách next_beam.
+        Sắp xếp next_beam theo heuristic tăng dần, chỉ giữ lại beam_width trạng thái tốt nhất cho bước tiếp theo.
+        Nếu trong next_beam có trạng thái là goal, trả về đường đi.
+      Gán current_beam = next_beam và lặp lại.
+      Kết thúc
+        Nếu sau số bước tối đa vẫn chưa tìm thấy goal, trả về "không tìm thấy lời giải".
+    3. Giải thích các biến và cấu trúc
+      beam_width: Số lượng trạng thái tối đa giữ lại ở mỗi bước (quyết định độ rộng tìm kiếm).
+      current_beam: Danh sách các trạng thái hiện tại đang xét ở mỗi bước.
+      next_beam: Danh sách các trạng thái sinh ra từ current_beam, sẽ được chọn lọc cho bước tiếp theo.
+      heuristic: Hàm đánh giá độ gần với trạng thái đích (thường là tổng khoảng cách Manhattan).
+      visited: Tập hợp các trạng thái đã duyệt, giúp tránh lặp lại.
+      parent: Mỗi trạng thái lưu trạng thái cha, giúp truy vết đường đi nếu tìm thấy goal.
+    4. Ưu nhược điểm của Beam Search trong 8-puzzle
+      Ưu điểm:
+        Tốc độ nhanh, tiết kiệm bộ nhớ hơn BFS vì chỉ giữ lại một số trạng thái tốt nhất.
+        Dễ điều chỉnh độ rộng tìm kiếm bằng cách thay đổi beam_width.
+        Có thể tìm ra lời giải nhanh nếu beam_width đủ lớn và heuristic tốt.
+      Nhược điểm:
+        Không đảm bảo tìm được lời giải (có thể bị bỏ lỡ lời giải nếu beam_width quá nhỏ).
+        Đường đi có thể không ngắn nhất
+        Phụ thuộc mạnh vào giá trị beam_width và chất lượng heuristic.
+  ![Beam Search Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/beam_search.gif)
+  
+  #### And or 
+
+    5. Lý do code AND-OR Search luôn trả về "không tìm thấy lời giải"
+      Giới hạn số bước tối đa (max_steps):
+      Trong quá trình cài đặt AND-OR Search cho 8-puzzle, để tránh việc thuật toán chạy quá lâu hoặc rơi vào vòng lặp vô hạn, em đã thêm một tham số giới hạn số bước tối đa ( max_depth). Khi số bước thực hiện vượt quá giới hạn này mà chưa tìm thấy lời giải, thuật toán sẽ dừng lại và trả về "không tìm thấy lời giải".
+      Ảnh hưởng thực tế:
+      Với 8-puzzle, không gian trạng thái rất lớn, cây AND-OR có thể phân nhánh cực kỳ mạnh (đặc biệt nếu môi trường động hoặc có nhiều mục tiêu con). Nếu max_steps đặt quá thấp (so với độ sâu cần thiết để giải), thuật toán sẽ không đủ thời gian hoặc số bước để duyệt tới trạng thái goal, dẫn đến việc mọi trạng thái đầu vào đều trả về "không tìm thấy lời giải".
+      Vì sao lại cần max_steps:
+        Tránh bùng nổ trạng thái và treo chương trình.
+        Bảo vệ tài nguyên hệ thống khi chạy thử nghiệm.
+        Nhưng nếu giá trị này không phù hợp với độ phức tạp thực tế, nó sẽ làm thuật toán không thể tìm ra lời giải dù trạng thái đầu vào hoàn toàn hợp lệ.
+    ---> Tóm lại, lý do là em đã đặt max_steps còn thấp, chưa đủ tiêu chí cao để nó có thể giải được. ( max_depth hiện tại = 20 )
+    Cô có thể thay đổi max_depth để nó có thể chạy được.
   ![And-Or Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/and-or.gif)
 
-  ### Genetic
+  #### Genetic ( Di truyền )
     1. Ý tưởng tổng quát của Genetic Algorithm
       Genetic Algorithm (GA) là thuật toán tối ưu hóa lấy cảm hứng từ tiến hóa sinh học tự nhiên.
       Mỗi cá thể (individual) đại diện cho một lời giải tiềm năng (thường là một hoán vị các số 0-8 cho 8-puzzle).
@@ -569,7 +579,7 @@
 
 ![Genetic Algorithm Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/genetic.gif)
         
-  ### Partially Observable ( Nhìn thấy 1 phần )
+  #### Partially Observable ( Nhìn thấy 1 phần )
     1. Ý tưởng tổng quát của AND-OR Search
       AND-OR Search là thuật toán tìm kiếm được sử dụng cho các bài toán có cấu trúc phân rã mục tiêu thành các mục tiêu con (AND) hoặc có nhiều lựa chọn (OR).
       Trong cây tìm kiếm:
@@ -608,7 +618,7 @@
         Cài đặt phức tạp hơn các thuật toán tìm kiếm truyền thống.
   ![Nhìn thay 1 phần Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Nh%C3%ACn_thay_1_phan.gif)
 
-  ### Dynamic Environment ( Môi trường động ) - thay thế cho Belief State 
+  #### Dynamic Environment ( Môi trường động ) - thay thế cho Belief State 
     1. Ý tưởng tổng quát của Dynamic Environment
       Dynamic Environment là mô hình mô phỏng môi trường động, nơi trạng thái của bài toán (hoặc các yếu tố liên quan) có thể thay đổi trong quá trình giải quyết, không còn cố định như môi trường truyền thống.
       Trong 8-puzzle, điều này có thể bao gồm: trạng thái goal thay đổi, các quy tắc di chuyển thay đổi, hoặc trạng thái hiện tại bị tác động bởi các yếu tố bên ngoài (ví dụ: người chơi khác, tác nhân ngẫu nhiên).
@@ -655,7 +665,8 @@
       Dynamic Environment là giải pháp thực tiễn, linh hoạt và dễ mở rộng hơn cho project 8-puzzle, nhất là khi muốn kiểm thử các thuật toán trong môi trường thay đổi, hoặc chỉ cần một mức độ "tin tưởng" đơn giản thay vì mô hình hóa toàn bộ belief state.
       Nếu sau này cần mở rộng để mô phỏng môi trường chỉ quan sát được một phần (partially observable), bạn vẫn có thể tích hợp belief state vào Dynamic Environment một cách tự nhiên.
   ![Dynamic Programming Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/dynamic.gif)
-  ### Back tracking 
+  
+  #### Back tracking 
     1. Ý tưởng tổng quát của Backtracking
       Backtracking là thuật toán thử - sai, xây dựng lời giải từng bước một, nếu phát hiện không thể tiếp tục thì quay lui về bước trước để thử hướng khác.
       Trong 8-puzzle (dưới dạng CSP), mỗi vị trí trên bảng là một biến, giá trị là các số từ 0-8, ràng buộc là không trùng số và đúng cấu hình đích.
@@ -692,7 +703,7 @@
       Hiệu quả phụ thuộc mạnh vào thứ tự gán biến và kiểm tra ràng buộc.
   ![Backtrack Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/backtrack.gif)
 
-  ### Forward Checking
+  #### Forward Checking
     1. Ý tưởng tổng quát của Forward Checking
       Forward Checking là một kỹ thuật tối ưu hóa trong giải bài toán ràng buộc (CSP).
       Khi gán giá trị cho một biến, Forward Checking sẽ loại bỏ giá trị đó khỏi domain của các biến chưa gán, kiểm tra trước xem có biến nào sẽ bị  domain rỗng không.
@@ -732,7 +743,7 @@
         Không giải quyết được tất cả các trường hợp bế tắc phức tạp như AC-3.
   ![Forward Checking Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/forward.gif)
   
-  ### AC3
+  #### AC3
     1. Ý tưởng tổng quát của AC-3
       AC-3 là một thuật toán kiểm tra tính nhất quán cung (arc consistency) trong các bài toán ràng buộc (CSP).
       AC-3 đảm bảo rằng với mỗi cặp biến liên quan bởi một ràng buộc, mọi giá trị trong domain của một biến đều có ít nhất một giá trị tương ứng hợp lệ trong domain của biến còn lại.
@@ -769,7 +780,7 @@
         Không tự động sinh ra lời giải, chỉ rút gọn domain; cần kết hợp với backtracking để giải hoàn chỉnh.
   ![AC-3 Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Ac-3.gif)
   
-  ### Q Learning
+  #### Q Learning
     1. Ý tưởng tổng quát của Q-Learning
       Q-Learning là một thuật toán học tăng cường (reinforcement learning) không cần mô hình môi trường.
       Thuật toán học một hàm Q(state, action) đánh giá giá trị kỳ vọng của việc thực hiện action tại state, sau đó đi theo chính sách ( policy ) tối ưu dựa trên Q.
@@ -811,4 +822,81 @@
       Tốn nhiều bộ nhớ để lưu bảng Q nếu số trạng thái/action lớn.
       Đường đi tìm được có thể không tối ưu nếu chưa hội tụ đủ.
   ![Q-Learning Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/q-learning.gif)
+
+
+### 3.2 So sánh hiệu suất các thuật toán giải 8-puzzle
+  #### 1. Tiêu chí đánh giá hiệu suất
+    Tốc độ giải (thời gian chạy): Mất bao lâu để tìm ra lời giải.
+    Bộ nhớ sử dụng: Dung lượng bộ nhớ cần thiết cho quá trình giải.
+    Chất lượng lời giải: Độ ngắn của đường đi, có tối ưu không.
+    Khả năng tìm ra lời giải: Có đảm bảo luôn tìm ra lời giải không.
+  #### 2. So sánh chi tiết
+    BFS (Breadth-First Search):
+      Tốc độ giải trung bình, nhưng sử dụng rất nhiều bộ nhớ do phải lưu toàn bộ cây trạng thái. 
+      Đảm bảo tìm ra lời giải tối ưu. 
+      Phù hợp cho bài toán nhỏ.
+    DFS (Depth-First Search):
+      Có thể nhanh nếu gặp may, sử dụng ít bộ nhớ. 
+      Tuy nhiên không đảm bảo tìm ra lời giải, dễ rơi vào vòng lặp vô hạn và không tìm được lời giải tối ưu.
+    UCS (Uniform Cost Search):
+      Tương tự BFS nhưng có trọng số, đảm bảo lời giải tối ưu. 
+      Chạy chậm và tốn bộ nhớ lớn.
+    IDS (Iterative Deepening Search):
+      Kết hợp ưu điểm của BFS và DFS: sử dụng ít bộ nhớ, đảm bảo tìm được lời giải tối ưu. 
+      Tuy nhiên, do phải lặp lại nhiều lần nên tốc độ chậm.
+    Greedy Best-First Search:
+      Chạy nhanh, sử dụng bộ nhớ vừa phải. 
+      Không đảm bảo lời giải tối ưu, dễ bị kẹt ở local optimum nếu heuristic không tốt.
+    A (A-star):
+      Là thuật toán hiệu quả nhất nếu sử dụng heuristic tốt (khoảng cách Manhattan). 
+      Đảm bảo tìm ra lời giải tối ưu, nhưng sử dụng nhiều bộ nhớ.
+    IDA (Iterative Deepening A-star):
+      Là phiên bản tiết kiệm bộ nhớ của A. 
+      Đảm bảo tìm được lời giải tối ưu, nhưng có thể chậm hơn A.
+    Hill Climbing:
+      Chạy nhanh và dùng rất ít bộ nhớ, nhưng dễ bị kẹt ở local optimum. 
+      Không đảm bảo tìm ra lời giải hoặc tối ưu.
+    Stochastic / Steepest Ascent Hill Climbing:
+      Cải tiến từ Hill Climbing giúp giảm khả năng kẹt ở local optimum. 
+      Tuy nhiên vẫn không đảm bảo lời giải và không tối ưu.
+    Beam Search:
+      Chạy nhanh, hiệu quả nếu chọn beam width phù hợp. 
+      Tuy nhiên dễ bỏ qua lời giải do không duy trì đầy đủ các nhánh.
+    Simulated Annealing:
+      Có thể thoát local optimum nhờ tính ngẫu nhiên. 
+      Không đảm bảo tìm ra lời giải, hiệu suất phụ thuộc nhiều vào cấu hình nhiệt độ.
+    Genetic Algorithm ( giải thuật di truyền )
+      Tốc độ chậm, dùng nhiều bộ nhớ. 
+      Phụ thuộc vào các tham số như tỷ lệ đột biến, chọn lọc... 
+      Thường chỉ tìm được lời giải gần đúng, không tối ưu.
+    Backtracking:
+      Rất chậm nhưng sử dụng ít bộ nhớ. Có thể tìm được lời giải và đảm bảo tối ưu. 
+      Tuy nhiên, không thực tế cho 8-puzzle vì không gian trạng thái quá lớn.
+    Forward Checking:
+      Là cải tiến của backtracking giúp loại bỏ giá trị không hợp lệ sớm hơn. 
+      Tối ưu hơn về tốc độ nhưng vẫn không phù hợp với 8-puzzle lớn.
+    AC-3 (Arc Consistency):
+      Dùng để giảm miền giá trị trước khi tìm lời giải. 
+      Không tự giải bài toán mà thường kết hợp với backtracking. 
+      Không dùng riêng cho 8-puzzle.
+    Q-Learning (Reinforcement Learning):
+      Quá chậm, sử dụng rất nhiều bộ nhớ. 
+      Không đảm bảo tìm ra lời giải nếu chưa hội tụ. 
+      Không phù hợp cho 8-puzzle do không gian trạng thái rất lớn.
+
+#### 3. Nhận xét tổng quát
+     A* là lựa chọn tối ưu nếu sử dụng heuristic tốt (khoảng cách Manhattan).
+     IDA phù hợp khi bộ nhớ giới hạn, tuy nhiên tốc độ có thể chậm hơn A*.
+     Các thuật toán local search  không đảm bảo lời giải tối ưu, chủ yếu dùng để kiểm thử ý tưởng
+     Các kỹ thuật CSP (Backtracking, FC, AC-3) không phù hợp với 8-puzzle ở quy mô thực tế.
+     Q-Learning và các phương pháp học tăng cường thiếu hiệu quả với không gian trạng thái lớn như 8-puzzle.
+
+
+
+
+
+
+
+
+
     
