@@ -609,25 +609,51 @@
   ![Nhìn thay 1 phần Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Nh%C3%ACn_thay_1_phan.gif)
 
   ### Dynamic Environment ( Môi trường động ) - thay thế cho Belief State 
-    1. Belief State là gì?
-      Belief State là tập hợp các trạng thái có thể xảy ra của hệ thống khi agent không biết chính xác trạng thái thật (do thiếu thông tin hoặc môi trường không xác định).
-      Trong 8-puzzle, belief state thường dùng khi agent không quan sát được toàn bộ bảng (partially observable), hoặc có sự không chắc chắn về vị trí các ô.
-    2. Dynamic Environment là gì?
-      Dynamic Environment (môi trường động) là môi trường mà trạng thái có thể thay đổi do tác động bên ngoài hoặc do bản thân môi trường (không chỉ do hành động của agent).
-      Trong project, class như DynamicPuzzleEnvironment mô phỏng trạng thái có thể thay đổi, cập nhật tự động, hoặc agent phải thích nghi với sự thay đổi này.
-    3. Lý do thay thế Belief State bằng Dynamic Environment
-      Tuy nhiên, việc cài đặt belief state đúng chuẩn (tức là duy trì một tập hợp các trạng thái có thể xảy ra, cập nhật sau mỗi quan sát/hành động) khá phức tạp và không trực quan cho 8-puzzle, và cũng thực hiện không thành công.
-    Khi chuyển sang mô hình Dynamic Environment thì có thể :
-      Mô phỏng các trường hợp trạng thái thật thay đổi ngoài ý muốn (ví dụ: ai đó thay đổi bảng, hoặc có yếu tố ngẫu nhiên).
-      Kết hợp với các hàm cập nhật belief (ví dụ: update_belief, apply_move) để quản lý tập hợp các trạng thái có thể xảy ra.
-      Cho phép agent thích nghi với sự thay đổi, kiểm thử thuật toán trong môi trường không tĩnh, phù hợp với các bài toán nâng cao hơn.
-    Ưu điểm của Dynamic Environment so với Belief State :
-      Dễ cài đặt hơn: Bạn chỉ cần quản lý trạng thái hiện tại và cập nhật khi có thay đổi, thay vì phải duy trì và cập nhật một tập hợp lớn các belief states.
-      Linh hoạt hơn: Có thể mô phỏng nhiều trường hợp thực tế hơn, như trạng thái bị thay đổi bởi tác nhân ngoài, hoặc trạng thái đích thay đổi động.
-      Tích hợp tốt với GUI: Người dùng có thể trực tiếp thay đổi trạng thái, kiểm thử các thuật toán trong môi trường động.
-    4. Kết luận
-      Dynamic Environment là một cách tiếp cận thực tế, linh hoạt, giúp mô phỏng các tình huống phức tạp hơn cho bài toán 8-puzzle.
-      Việc thay thế này giúp code dễ bảo trì, kiểm thử, và mở rộng cho các bài toán thực tế hoặc các môi trường nâng cao.
+    1. Ý tưởng tổng quát của Dynamic Environment
+      Dynamic Environment là mô hình mô phỏng môi trường động, nơi trạng thái của bài toán (hoặc các yếu tố liên quan) có thể thay đổi trong quá trình giải quyết, không còn cố định như môi trường truyền thống.
+      Trong 8-puzzle, điều này có thể bao gồm: trạng thái goal thay đổi, các quy tắc di chuyển thay đổi, hoặc trạng thái hiện tại bị tác động bởi các yếu tố bên ngoài (ví dụ: người chơi khác, tác nhân ngẫu nhiên).
+      Ưu điểm: Cho phép kiểm thử thuật toán trong các tình huống thực tế hơn, nơi môi trường không tĩnh và có thể thay đổi bất ngờ.
+      Nhược điểm: Làm cho việc giải quyết bài toán phức tạp hơn, khó đảm bảo tính tối ưu hoặc đúng tuyệt đối như môi trường tĩnh.
+    2. Hoạt động
+    Khởi tạo
+      Tạo một đối tượng môi trường động (DynamicPuzzleEnvironment) với trạng thái đầu (initial_state).
+      Xác định các quy tắc động: có thể là goal_state thay đổi, trạng thái bị tác động ngoài ý muốn, hoặc chỉ quan sát được một phần trạng thái (partially observable).
+    Trong quá trình giải
+      Khi thực hiện một bước di chuyển (apply_move), môi trường có thể:
+      Cập nhật trạng thái thực tế dựa trên hành động.
+      Thay đổi trạng thái goal hoặc các ràng buộc khác.
+      Cập nhật các trạng thái tin tưởng (belief states) nếu chỉ quan sát được một phần trạng thái.
+      Ở mỗi bước, thuật toán phải kiểm tra lại trạng thái hiện tại, goal, và các điều kiện môi trường.
+    Kết thúc
+      Khi đạt được trạng thái goal (dù goal có thể đã thay đổi), trả về lời giải.
+      Nếu môi trường thay đổi khiến goal không còn đạt được, báo thất bại.
+    3. Giải thích các biến và cấu trúc
+      DynamicPuzzleEnvironment: Lớp mô phỏng môi trường động, quản lý trạng thái hiện tại, goal, và các quy tắc động.
+      current_state: Trạng thái hiện tại của puzzle (có thể bị thay đổi ngoài ý muốn).
+      goal_state: Trạng thái đích, có thể thay đổi trong quá trình giải.
+      apply_move(move): Hàm thực hiện di chuyển, đồng thời cập nhật lại trạng thái dựa vào các quy tắc động.
+      belief_states: (Nếu có) Tập hợp các trạng thái tin tưởng về tình hình thực tế, dùng khi môi trường chỉ quan sát được một phần.
+      _update_observed_positions(): Hàm cập nhật các ô đã quan sát được trên bảng.
+    4. Ưu nhược điểm của Dynamic Environment trong 8-puzzle
+    Ưu điểm:
+      Mô phỏng được các tình huống thực tế, nơi môi trường không cố định.
+      Cho phép kiểm thử thuật toán trong điều kiện khó, kiểm tra khả năng thích nghi.
+      Hỗ trợ các bài toán nâng cao như multi-agent, môi trường không xác định, hoặc bài toán chỉ quan sát một phần.
+    Nhược điểm:    
+      Làm tăng độ phức tạp của thuật toán và kiểm thử.
+      Khó đảm bảo tính tối ưu, vì môi trường có thể thay đổi bất ngờ.
+      Việc truy vết đường đi và xác định trạng thái goal có thể không còn chính xác tuyệt đối.
+    5. Lý do thay thế cho belief state và giải thích lựa chọn
+    Belief State truyền thống là gì?
+      Belief State là khái niệm trong AI dùng để mô tả tập hợp các trạng thái mà tác nhân cho là có thể xảy ra, khi môi trường không hoàn toàn quan sát được (partially observable).
+      Trong 8-puzzle, belief state thường dùng khi không biết chính xác trạng thái hiện tại 
+    Vì sao thay bằng Dynamic Environment?
+      Đơn giản hóa cài đặt: Dynamic Environment cho phép quản lý trạng thái, goal, và các quy tắc động một cách trực tiếp, dễ kiểm soát và dễ tích hợp với các thuật toán tìm kiếm truyền thống.
+      Linh hoạt hơn: Dynamic Environment có thể kết hợp cả các yếu tố của belief state, nhưng cũng có thể mô phỏng các tình huống mà belief state không mô tả được (ví dụ: goal thay đổi liên tục, trạng thái bị reset bất ngờ).
+      Tối ưu hiệu năng: Việc duy trì một tập hợp lớn các belief states rất tốn bộ nhớ và phức tạp, trong khi môi trường động có thể đơn giản chỉ cần cập nhật trạng thái hiện tại và goal.
+    6. Kết luận
+      Dynamic Environment là giải pháp thực tiễn, linh hoạt và dễ mở rộng hơn cho project 8-puzzle, nhất là khi muốn kiểm thử các thuật toán trong môi trường thay đổi, hoặc chỉ cần một mức độ "tin tưởng" đơn giản thay vì mô hình hóa toàn bộ belief state.
+      Nếu sau này cần mở rộng để mô phỏng môi trường chỉ quan sát được một phần (partially observable), bạn vẫn có thể tích hợp belief state vào Dynamic Environment một cách tự nhiên.
   ![Dynamic Programming Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/dynamic.gif)
   ### Back tracking 
     1. Ý tưởng tổng quát của Backtracking
@@ -667,6 +693,122 @@
   ![Backtrack Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/backtrack.gif)
 
   ### Forward Checking
+    1. Ý tưởng tổng quát của Forward Checking
+      Forward Checking là một kỹ thuật tối ưu hóa trong giải bài toán ràng buộc (CSP).
+      Khi gán giá trị cho một biến, Forward Checking sẽ loại bỏ giá trị đó khỏi domain của các biến chưa gán, kiểm tra trước xem có biến nào sẽ bị  domain rỗng không.
+      Nếu phát hiện có biến nào không còn giá trị hợp lệ để gán, thuật toán sẽ quay lui ngay lập tức , tránh mở rộng các nhánh không thể thành công.
+      Ưu điểm: Giảm mạnh số lượng trạng thái cần duyệt so với backtracking thuần túy, tăng tốc độ giải bài toán CSP.
+      Nhược điểm: Tốn thêm bộ nhớ và thời gian để cập nhật và kiểm tra domain của các biến.
+    2. Hoạt động
+    Khởi tạo
+      Xác định tập biến (vị trí trên bảng), domain (các giá trị có thể gán cho từng biến), assignment (gán giá trị cho biến).
+    Lặp lại cho đến khi gán hết biến hoặc không còn giá trị hợp lệ:
+      Chọn một biến chưa gán giá trị.
+      Thử từng giá trị trong domain của biến đó:
+      Gán giá trị cho biến.
+      Forward Checking: Loại giá trị vừa gán khỏi domain của các biến chưa gán.
+      Kiểm tra domain của các biến chưa gán:
+        Nếu có biến nào domain rỗng, quay lui ngay (không mở rộng nhánh này nữa).
+        Nếu tất cả domain còn giá trị, tiếp tục gán biến tiếp theo (đệ quy).
+        Khi quay lui, khôi phục lại domain ban đầu (undo).
+        Nếu đã gán hết biến và assignment thỏa mãn tất cả ràng buộc, trả về lời giải.
+    Kết thúc
+      Nếu thử hết các khả năng mà không tìm được assignment hợp lệ, trả về "không tìm thấy lời giải".
+    3. Giải thích các biến và cấu trúc
+      variables: Danh sách các biến (vị trí trên bảng 8-puzzle).
+      domains: Domain các giá trị có thể gán cho từng biến (thường là 0-8, loại bỏ các giá trị đã gán ở các biến trước).
+      assignment: Dictionary lưu giá trị đã gán cho từng biến.
+      goal_state: Trạng thái đích cần đạt được.
+      forward_check: Hàm thực hiện loại giá trị khỏi domain các biến chưa gán khi gán giá trị cho một biến.
+      backtrack: Hàm đệ quy thực hiện quá trình thử - sai và quay lui.
+    4. Ưu nhược điểm của Forward Checking trong 8-puzzle
+      Ưu điểm:
+        Giảm số lượng nhánh phải duyệt, tăng tốc độ giải bài toán CSP so với backtracking thuần túy.
+        Phát hiện sớm các nhánh không thể thành công, tiết kiệm thời gian.
+        Dễ kết hợp với các kỹ thuật khác như MRV (Minimum Remaining Values).
+      Nhược điểm:
+        Tốn thêm bộ nhớ để lưu domain của các biến.
+        Cần cài đặt logic undo (khôi phục domain khi quay lui).
+        Không giải quyết được tất cả các trường hợp bế tắc phức tạp như AC-3.
+  ![Forward Checking Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/forward.gif)
+  
   ### AC3
+    1. Ý tưởng tổng quát của AC-3
+      AC-3 là một thuật toán kiểm tra tính nhất quán cung (arc consistency) trong các bài toán ràng buộc (CSP).
+      AC-3 đảm bảo rằng với mỗi cặp biến liên quan bởi một ràng buộc, mọi giá trị trong domain của một biến đều có ít nhất một giá trị tương ứng hợp lệ trong domain của biến còn lại.
+      Khi phát hiện giá trị nào không còn hợp lệ, thuật toán loại bỏ giá trị đó khỏi domain, và nếu domain của một biến thay đổi thì các cung liên quan đến biến đó sẽ được kiểm tra lại.
+      Ưu điểm: Giảm mạnh không gian tìm kiếm, phát hiện sớm các trường hợp không có lời giải.
+      Nhược điểm: Chỉ kiểm tra nhất quán cục bộ, không giải quyết được tất cả các trường hợp bế tắc phức tạp như global consistency.
+    2. Hoạt động
+    Khởi tạo
+      Xác định tập biến (vị trí trên bảng), domain (các giá trị có thể gán cho từng biến), và tập các cung (arc) giữa các biến có ràng buộc trực tiếp (ví dụ: không trùng giá trị).
+      Lặp lại cho đến khi hàng đợi cung rỗng:
+      
+      Lấy một cung (Xi, Xj) ra khỏi hàng đợi.
+      Kiểm tra nhất quán cung: Với mỗi giá trị x trong domain của Xi, nếu không tồn tại giá trị y trong domain của Xj sao cho (x, y) thỏa mãn ràng buộc, thì loại x khỏi domain của Xi.
+      Nếu domain của Xi bị thay đổi:
+      Nếu domain rỗng, trả về "không có lời giải".
+      Thêm tất cả các cung liên quan đến Xi (trừ Xj) vào hàng đợi để kiểm tra lại.
+    Kết thúc
+      Nếu tất cả domain đều còn giá trị, trả về domain đã rút gọn (có thể giải tiếp bằng backtracking/forward checking).
+      Nếu có domain rỗng, thông báo là không có lời giải
+    3. Giải thích các biến và cấu trúc
+      variables: Danh sách các biến (vị trí trên bảng 8-puzzle).
+      domains: Domain các giá trị có thể gán cho từng biến (thường là 0-8, loại bỏ các giá trị đã gán ở các biến trước).
+      arcs: Tập các cung (Xi, Xj) giữa các biến có ràng buộc trực tiếp (thường là "không trùng giá trị").
+      queue: Hàng đợi các cung cần kiểm tra nhất quán.
+      revise(Xi, Xj): Hàm kiểm tra và loại bỏ các giá trị không còn hợp lệ khỏi domain của Xi dựa trên domain của Xj.
+    4. Ưu nhược điểm của AC-3 trong 8-puzzle
+      Ưu điểm:
+        Loại bỏ sớm các giá trị không hợp lệ, giảm mạnh không gian tìm kiếm cho backtracking/forward checking.
+        Phát hiện nhanh các trường hợp không có lời giải (domain rỗng).
+        Có thể kết hợp với các kỹ thuật CSP khác để tăng hiệu quả.
+      Nhược điểm:
+        Chỉ đảm bảo nhất quán cục bộ (local consistency), không đảm bảo tìm được lời giải nếu bài toán phức tạp.
+        Có thể tốn thời gian với các bài toán có nhiều biến và ràng buộc phức tạp.
+        Không tự động sinh ra lời giải, chỉ rút gọn domain; cần kết hợp với backtracking để giải hoàn chỉnh.
+  ![AC-3 Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Ac-3.gif)
+  
   ### Q Learning
+    1. Ý tưởng tổng quát của Q-Learning
+      Q-Learning là một thuật toán học tăng cường (reinforcement learning) không cần mô hình môi trường.
+      Thuật toán học một hàm Q(state, action) đánh giá giá trị kỳ vọng của việc thực hiện action tại state, sau đó đi theo chính sách ( policy ) tối ưu dựa trên Q.
+      Q-Learning giúp tác nhân học cách giải quyết bài toán thông qua thử nghiệm và rút kinh nghiệm từ phần thưởng (reward) nhận được.
+      Ưu điểm: Có thể áp dụng cho các môi trường phức tạp, không cần biết trước mô hình chuyển trạng thái.
+      Nhược điểm: Cần rất nhiều lần thử nghiệm (episode) để hội tụ, không thực tế cho 8-puzzle lớn do không gian trạng thái quá lớn.
+    2. Hoạt động
+    Khởi tạo
+      Khởi tạo bảng Q, Q[state][action] = 0 cho tất cả các state, action có thể.
+      Đặt các tham số: learning rate (alpha), discount factor (gamma), epsilon (xác suất chọn hành động ngẫu nhiên - exploration).
+    Lặp lại qua nhiều episode:
+      Đặt trạng thái hiện tại là initial_state.
+      Lặp lại cho đến khi đến goal_state hoặc hết số bước tối đa:
+      Chọn action: với xác suất epsilon, chọn ngẫu nhiên (exploration); còn lại chọn action có Q lớn nhất (exploitation).
+      Thực hiện action, nhận về next_state và reward (ví dụ: +1 nếu đến goal, -0.1 mỗi bước).
+      Cập nhật Q theo công thức:
+              Q[state][action] += alpha * (reward + gamma * max(Q[next_state]) - Q[state][action])
+      Chuyển sang next_state.
+      Sau khi học xong, để tìm đường đi tối ưu, luôn chọn action có Q lớn nhất tại mỗi state.
+    Kết thúc
+      Khi Q hội tụ, policy tốt nhất là luôn chọn action có Q lớn nhất tại mỗi state.
+    3. Giải thích các biến và cấu trúc
+      Q: Bảng Q lưu giá trị cho mỗi cặp (state, action).
+      state: Trạng thái hiện tại của puzzle (thường biểu diễn bằng tuple).
+      action: Hành động hợp lệ tại state (di chuyển ô trống lên/xuống/trái/phải).
+      alpha (learning rate): Tốc độ cập nhật Q.
+      gamma (discount factor): Độ ưu tiên phần thưởng tương lai.
+      epsilon: Xác suất chọn hành động ngẫu nhiên (exploration).
+      reward: Phần thưởng nhận được sau mỗi action (có thể là -0.1 mỗi bước, +1 khi tới goal).
+      episodes: Số lần lặp lại quá trình học.
+      max_steps: Số bước tối đa mỗi episode.
+    4. Ưu nhược điểm của Q-Learning trong 8-puzzle
+    Ưu điểm:
+      Không cần biết trước mô hình chuyển trạng thái của môi trường.
+      Có thể áp dụng cho các bài toán phức tạp, môi trường động, không xác định.
+      Policy học được có thể dùng lại cho các trạng thái tương tự.
+    Nhược điểm:
+      Cần rất nhiều episode để hội tụ, không thực tế cho 8-puzzle lớn do không gian trạng thái quá lớn.
+      Tốn nhiều bộ nhớ để lưu bảng Q nếu số trạng thái/action lớn.
+      Đường đi tìm được có thể không tối ưu nếu chưa hội tụ đủ.
+  ![Q-Learning Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/q-learning.gif)
     
