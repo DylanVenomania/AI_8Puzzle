@@ -67,7 +67,7 @@
     
 ## 3. Nội dung
   ### 3.1. Các thuật toán tìm kiếm không có thông tin (Uninformed Search)
-  ##### BFS: 
+  #### BFS: 
     1. Ý tưởng tổng quát của BFS
       BFS là thuật toán tìm kiếm theo chiều rộng.
       BFS duyệt các trạng thái theo cách : xét hết các trạng thái cách trạng thái đầu 1 bước, rồi đến 2 bước, v.v.
@@ -103,7 +103,7 @@
   
   ![BFS Animation for 8 Puzzle](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/bfs.gif)
   
-  ##### DFS: 
+  #### DFS: 
     1. Ý tưởng tổng quát của DFS
       DFS là thuật toán tìm kiếm theo chiều sâu.
       DFS duyệt các trạng thái bằng cách đi sâu nhất có thể vào một nhánh trước, chỉ khi không còn đi tiếp mới quay lại để thử nhánh khác.
@@ -141,7 +141,7 @@
 
    ![DFS Animation for 8 Puzzle](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/dfs.gif)
 
-  ##### UCS
+  #### UCS
     1. Ý tưởng tổng quát của UCS
       UCS là thuật toán tìm kiếm theo chi phí đều (Uniform Cost Search).
       UCS luôn mở rộng trạng thái có tổng chi phí nhỏ nhất từ trạng thái đầu đến trạng thái hiện tại (cost g(n)), không quan tâm đến heuristic.
@@ -180,7 +180,7 @@
         Không tận dụng được thông tin heuristic nên có thể chậm hơn A* trong nhiều trường hợp.
   ![UCS Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/ucs.gif)
   
-  ##### IDS
+  #### IDS
     1. Ý tưởng tổng quát của IDS
       IDS là thuật toán tìm kiếm sâu dần (Iterative Deepening Search).
       IDS kết hợp ưu điểm của DFS (tiết kiệm bộ nhớ) và BFS (tìm đường đi ngắn nhất).
@@ -215,7 +215,7 @@
       Không phù hợp với bài toán có không gian trạng thái quá lớn hoặc độ sâu lời giải quá lớn.
   ![IDS Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/ids.gif)
 ### 3.2. Các thuật toán tìm kiếm có thông tin (Informed Search / Heuristic Search)
-  ##### Greedy
+  #### Greedy
     1. Ý tưởng tổng quát của Greedy
         Greedy Best-First Search là thuật toán tìm kiếm theo hướng tham lam.
         Ở mỗi bước, thuật toán luôn chọn trạng thái có giá trị heuristic nhỏ nhất (dùng khoảng cách Manhattan).
@@ -252,7 +252,7 @@
         Có thể bị kẹt ở local optimum (trạng thái tưởng là tốt nhất nhưng không dẫn đến đích).
         
   ![Greedy Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/greedy.gif)
-  ##### A*
+  #### A*
     1. Ý tưởng tổng quát của A*
         A* là thuật toán tìm kiếm kết hợp giữa chi phí thực tế đã đi (g(n)) và ước lượng chi phí còn lại đến đích (h(n)), theo công thức:
         f(n) = g(n) + h(n)
@@ -297,7 +297,7 @@
           Nếu heuristic không tốt, có thể duyệt nhiều trạng thái không cần thiết.
           Cài đặt phức tạp hơn BFS/DFS/Greedy một chút do phải quản lý cả g(n), h(n), f(n).
   ![A Star Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/A_star.gif)
-  ##### IDA*
+  #### IDA*
     1. Ý tưởng tổng quát của IDA*
       IDA* là thuật toán kết hợp giữa A* và DFS sâu dần.
       Thay vì lưu toàn bộ các trạng thái như A*, IDA* sử dụng DFS nhưng chỉ mở rộng các trạng thái có f(n) ≤ một ngưỡng (bound) nhất định.
@@ -336,7 +336,7 @@
   ![IDA Star Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/IDA_star.gif)
   
   ### 3.3. Tìm kiếm cục bộ ( Local Search )
-  ##### Simple hill climbing 
+  #### Simple hill climbing 
     1. Ý tưởng tổng quát của Simple Hill Climbing
       Simple Hill Climbing là thuật toán tìm kiếm cục bộ (local search).
       Ở mỗi bước, thuật toán luôn chọn trạng thái láng giềng (neighbor) tốt hơn hiện tại, dựa trên giá trị heuristic (thường là tổng khoảng cách Manhattan đến đích).
@@ -372,7 +372,7 @@
 
   ![Simple Hill Climbing Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/simple_cimb.gif)
   
-  ##### Stochastic Hill climbing
+  #### Stochastic Hill climbing
     1. Ý tưởng tổng quát của Stochastic Hill Climbing
       Stochastic Hill Climbing là một biến thể của thuật toán leo đồi (hill climbing).
       Thay vì luôn chọn neighbor tốt nhất (giống Simple/Steepest), thuật toán này chọn ngẫu nhiên một neighbor nào đó tốt hơn trạng thái hiện tại.
@@ -409,7 +409,7 @@
         
   ![Stochastic Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/stochastic.gif)
   
-  ##### Steepest Ascent hill climbing
+  #### Steepest Ascent hill climbing
     1. Ý tưởng tổng quát của Steepest Ascent Hill Climbing
       Steepest Ascent Hill Climbing là một biến thể của thuật toán leo đồi (hill climbing).
       Ở mỗi bước, thuật toán xét tất cả các trạng thái láng giềng (neighbor) của trạng thái hiện tại và luôn chọn neighbor có giá trị heuristic tốt nhất (nhỏ nhất) để chuyển sang.
@@ -445,7 +445,7 @@
         Không đảm bảo tìm được lời giải, đặc biệt với trạng thái đầu xa đích hoặc nhiều local optimum.
         Đường đi có thể không ngắn nhất
 
-  ##### Simulated Anealling
+  #### Simulated Anealling
       1. Ý tưởng tổng quát của Simulated Annealing
       Simulated Annealing là thuật toán tìm kiếm cục bộ (local search), được lấy ý tưởng từ quá trình ủ nhiệt luyện kim.
       Ở mỗi bước, thuật toán có thể chấp nhận chuyển sang trạng thái xấu hơn (heuristic cao hơn) với một xác suất nhất định, xác suất này giảm dần theo nhiệt độ.
@@ -486,7 +486,7 @@
       Đường đi thường không ngắn nhất.
   ![Simulated Annealing Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/anealing.gif)
 
-    ##### Genetic ( Di truyền )
+  #### Genetic ( Di truyền )
     1. Ý tưởng tổng quát của Genetic Algorithm
       Genetic Algorithm (GA) là thuật toán tối ưu hóa lấy cảm hứng từ tiến hóa sinh học tự nhiên.
       Mỗi cá thể (individual) đại diện cho một lời giải tiềm năng (thường là một hoán vị các số 0-8 cho 8-puzzle).
@@ -528,7 +528,7 @@
 
 ![Genetic Algorithm Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/genetic.gif)
  
-  ##### Beam Search
+  #### Beam Search
     1. Ý tưởng tổng quát của Beam Search
       Beam Search là thuật toán tìm kiếm heuristic, kết hợp giữa BFS và Greedy.
       Ở mỗi bước, thuật toán chỉ giữ lại một số lượng giới hạn các trạng thái tốt nhất ( khoảng cách Manhattan đến đích) : là "beam width".
@@ -567,7 +567,7 @@
 
 
 ### 3.4. Tìm kiếm trong môi trường phức tạp
-  ##### And or 
+  #### And or 
     1. Ý tưởng tổng quát của AND-OR Search
       AND-OR Search là thuật toán tìm kiếm được sử dụng cho các bài toán có cấu trúc phân rã mục tiêu thành các mục tiêu con (AND) hoặc có nhiều lựa chọn (OR).
       Trong cây tìm kiếm:
@@ -617,7 +617,7 @@
       Cô có thể thay đổi max_depth để nó có thể chạy được.
   ![And-Or Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/and-or.gif)
         
-  ##### Partially Observable ( Nhìn thấy 1 phần )
+  #### Partially Observable ( Nhìn thấy 1 phần )
     1. Ý tưởng tổng quát của Partially Observable (Quan sát một phần)
       Partially Observable là mô hình trong đó tác nhân (agent) không thể quan sát đầy đủ trạng thái thực của môi trường, mà chỉ nhìn thấy một phần thông tin.
       Trong 8-puzzle, điều này có thể là: chỉ nhìn thấy một số ô trên bảng, các ô còn lại bị che khuất hoặc không rõ giá trị.
@@ -659,7 +659,7 @@
 
   ![Nhìn thay 1 phần Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Nh%C3%ACn_thay_1_phan.gif)
 
-  ##### Dynamic Environment ( Môi trường động ) - thay thế cho Belief State 
+  #### Dynamic Environment ( Môi trường động ) - thay thế cho Belief State 
     1. Ý tưởng tổng quát của Dynamic Environment
       Dynamic Environment là mô hình mô phỏng môi trường động, nơi trạng thái của bài toán (hoặc các yếu tố liên quan) có thể thay đổi trong quá trình giải quyết, không còn cố định như môi trường truyền thống.
       Trong 8-puzzle, điều này có thể bao gồm: trạng thái goal thay đổi, các quy tắc di chuyển thay đổi, hoặc trạng thái hiện tại bị tác động bởi các yếu tố bên ngoài (ví dụ: người chơi khác, tác nhân ngẫu nhiên).
@@ -707,7 +707,7 @@
       Nếu sau này cần mở rộng để mô phỏng môi trường chỉ quan sát được một phần (partially observable), bạn vẫn có thể tích hợp belief state vào Dynamic Environment một cách tự nhiên.
   ![Dynamic Programming Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/dynamic.gif)
   
-  ##### Back tracking 
+  #### Back tracking 
     1. Ý tưởng tổng quát của Backtracking
       Backtracking là thuật toán thử - sai, xây dựng lời giải từng bước một, nếu phát hiện không thể tiếp tục thì quay lui về bước trước để thử hướng khác.
       Trong 8-puzzle (dưới dạng CSP), mỗi vị trí trên bảng là một biến, giá trị là các số từ 0-8, ràng buộc là không trùng số và đúng cấu hình đích.
@@ -744,7 +744,7 @@
       Hiệu quả phụ thuộc mạnh vào thứ tự gán biến và kiểm tra ràng buộc.
   ![Backtrack Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/backtrack.gif)
 
-  ##### Forward Checking
+  #### Forward Checking
     1. Ý tưởng tổng quát của Forward Checking
       Forward Checking là một kỹ thuật tối ưu hóa trong giải bài toán ràng buộc (CSP).
       Khi gán giá trị cho một biến, Forward Checking sẽ loại bỏ giá trị đó khỏi domain của các biến chưa gán, kiểm tra trước xem có biến nào sẽ bị  domain rỗng không.
@@ -784,7 +784,7 @@
         Không giải quyết được tất cả các trường hợp bế tắc phức tạp như AC-3.
   ![Forward Checking Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/forward.gif)
   
-  ##### AC3
+  #### AC3
     1. Ý tưởng tổng quát của AC-3
       AC-3 là một thuật toán kiểm tra tính nhất quán cung (arc consistency) trong các bài toán ràng buộc (CSP).
       AC-3 đảm bảo rằng với mỗi cặp biến liên quan bởi một ràng buộc, mọi giá trị trong domain của một biến đều có ít nhất một giá trị tương ứng hợp lệ trong domain của biến còn lại.
@@ -821,7 +821,7 @@
         Không tự động sinh ra lời giải, chỉ rút gọn domain; cần kết hợp với backtracking để giải hoàn chỉnh.
   ![AC-3 Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Ac-3.gif)
   
-  ##### Q Learning
+  #### Q Learning
     1. Ý tưởng tổng quát của Q-Learning
       Q-Learning là một thuật toán học tăng cường (reinforcement learning) không cần mô hình môi trường.
       Thuật toán học một hàm Q(state, action) đánh giá giá trị kỳ vọng của việc thực hiện action tại state, sau đó đi theo chính sách ( policy ) tối ưu dựa trên Q.
@@ -866,12 +866,12 @@
 
 
 ### 3.2 So sánh hiệu suất các thuật toán giải 8-puzzle
-  ##### 1. Tiêu chí đánh giá hiệu suất
+  #### 1. Tiêu chí đánh giá hiệu suất
     Tốc độ giải (thời gian chạy): Mất bao lâu để tìm ra lời giải.
     Bộ nhớ sử dụng: Dung lượng bộ nhớ cần thiết cho quá trình giải.
     Chất lượng lời giải: Độ ngắn của đường đi, có tối ưu không.
     Khả năng tìm ra lời giải: Có đảm bảo luôn tìm ra lời giải không.
-  ##### 2. So sánh chi tiết
+  #### 2. So sánh chi tiết
     BFS (Breadth-First Search):
       Tốc độ giải trung bình, nhưng sử dụng rất nhiều bộ nhớ do phải lưu toàn bộ cây trạng thái. 
       Đảm bảo tìm ra lời giải tối ưu. 
@@ -925,7 +925,7 @@
       Không đảm bảo tìm ra lời giải nếu chưa hội tụ. 
       Không phù hợp cho 8-puzzle do không gian trạng thái rất lớn.
 
-##### 3. Nhận xét tổng quát
+#### 3. Nhận xét tổng quát
      A* là lựa chọn tối ưu nếu sử dụng heuristic tốt (khoảng cách Manhattan).
      IDA phù hợp khi bộ nhớ giới hạn, tuy nhiên tốc độ có thể chậm hơn A*.
      Các thuật toán local search  không đảm bảo lời giải tối ưu, chủ yếu dùng để kiểm thử ý tưởng
