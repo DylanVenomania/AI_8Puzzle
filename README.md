@@ -706,7 +706,8 @@
       Dynamic Environment là giải pháp thực tiễn, linh hoạt và dễ mở rộng hơn cho project 8-puzzle, nhất là khi muốn kiểm thử các thuật toán trong môi trường thay đổi, hoặc chỉ cần một mức độ "tin tưởng" đơn giản thay vì mô hình hóa toàn bộ belief state.
       Nếu sau này cần mở rộng để mô phỏng môi trường chỉ quan sát được một phần (partially observable), bạn vẫn có thể tích hợp belief state vào Dynamic Environment một cách tự nhiên.
   ![Dynamic Programming Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/dynamic.gif)
-  
+
+### 3.5. Tìm kiếm trong môi trường có ràng buộc ( CSP )
   #### Back tracking 
     1. Ý tưởng tổng quát của Backtracking
       Backtracking là thuật toán thử - sai, xây dựng lời giải từng bước một, nếu phát hiện không thể tiếp tục thì quay lui về bước trước để thử hướng khác.
@@ -821,6 +822,7 @@
         Không tự động sinh ra lời giải, chỉ rút gọn domain; cần kết hợp với backtracking để giải hoàn chỉnh.
   ![AC-3 Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/Ac-3.gif)
   
+  ### 3.6. Thuật toán học tăng cường ( Reinforcement Learning )
   #### Q Learning
     1. Ý tưởng tổng quát của Q-Learning
       Q-Learning là một thuật toán học tăng cường (reinforcement learning) không cần mô hình môi trường.
@@ -939,9 +941,9 @@
     Qua đây, có thể học được cách triển khai thuật toán, biết được nhiều thông tin về nó đồng thời còn rèn luyện được khả năng áp dụng thuật toán vào project, ( tuy có hơi khó huhu T T )
 
 ## Lời cảm ơn 
-    Em xin gửi lời cảm ơn sâu sắc đến cô, cô đã hết mình truyền đạt kinh nghiệm, kiến thức cho em trong suốt quá trình học tập môn Trí tuệ nhân tạo. Nhờ sự hướng dẫn tận tâm và đầy tình cảm  của cô, em đã hiểu được các thuật toán ( mặc dù không phải tất cả ), có thêm kiến thức cũng như có thêm được một người cô dễ mến. Cảm ơn cô đã kiên nhẫn hết sức giải thích cho tụi em kiến thức ạ.
-    Mặc dù em vẫn chưa nắm vững hết, nhưng em sẽ cố gắng luyện tập thêm, rèn luyện để nắm vững hơn, rõ hơn, để không phụ lòng của cô ! Em cảm ơn cô nhiều ạ !
-    Một lần nữa, em xin chân thành cảm ơn cô và kính chúc cô luôn mạnh khỏe, hạnh phúc, công việc thăng tiến và tiếp tục có thể truyền đạt kiến thức, kinh nghiệm cho nhiều học sinh hơn nữa ạ.
+  Em xin gửi lời cảm ơn sâu sắc đến cô, cô đã hết mình truyền đạt kinh nghiệm, kiến thức cho em trong suốt quá trình học tập môn Trí tuệ nhân tạo. Nhờ sự hướng dẫn tận tâm và đầy tình cảm  của cô, em đã hiểu được các thuật toán ( mặc dù không phải tất cả ), có thêm kiến thức cũng như có thêm được một người cô dễ mến. Cảm ơn cô đã kiên nhẫn hết sức giải thích cho tụi em kiến thức ạ.
+  Mặc dù em vẫn chưa nắm vững hết, nhưng em sẽ cố gắng luyện tập thêm, rèn luyện để nắm vững hơn, rõ hơn, để không phụ lòng của cô ! Em cảm ơn cô nhiều ạ !
+  Một lần nữa, em xin chân thành cảm ơn cô và kính chúc cô luôn mạnh khỏe, hạnh phúc, công việc thăng tiến và tiếp tục có thể truyền đạt kiến thức, kinh nghiệm cho nhiều học sinh hơn nữa ạ.
 
 
 
