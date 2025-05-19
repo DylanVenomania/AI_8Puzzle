@@ -867,13 +867,13 @@
   ![Q-Learning Animation](https://github.com/DylanVenomania/AI_8Puzzle/raw/main/gifs/q-learning.gif)
 
 
-### 3.2 So sánh hiệu suất các thuật toán giải 8-puzzle
-  #### 1. Tiêu chí đánh giá hiệu suất
+## 4. So sánh hiệu suất các thuật toán giải 8-puzzle
+  ### 4.1. Tiêu chí đánh giá hiệu suất
     Tốc độ giải (thời gian chạy): Mất bao lâu để tìm ra lời giải.
     Bộ nhớ sử dụng: Dung lượng bộ nhớ cần thiết cho quá trình giải.
     Chất lượng lời giải: Độ ngắn của đường đi, có tối ưu không.
     Khả năng tìm ra lời giải: Có đảm bảo luôn tìm ra lời giải không.
-  #### 2. So sánh chi tiết
+  ### 4.2. So sánh chi tiết
     BFS (Breadth-First Search):
       Tốc độ giải trung bình, nhưng sử dụng rất nhiều bộ nhớ do phải lưu toàn bộ cây trạng thái. 
       Đảm bảo tìm ra lời giải tối ưu. 
@@ -927,14 +927,14 @@
       Không đảm bảo tìm ra lời giải nếu chưa hội tụ. 
       Không phù hợp cho 8-puzzle do không gian trạng thái rất lớn.
 
-#### 3. Nhận xét tổng quát
+### 4.3. Nhận xét tổng quát
      A* là lựa chọn tối ưu nếu sử dụng heuristic tốt (khoảng cách Manhattan).
      IDA phù hợp khi bộ nhớ giới hạn, tuy nhiên tốc độ có thể chậm hơn A*.
      Các thuật toán local search  không đảm bảo lời giải tối ưu, chủ yếu dùng để kiểm thử ý tưởng
      Các kỹ thuật CSP (Backtracking, FC, AC-3) không phù hợp với 8-puzzle ở quy mô thực tế.
      Q-Learning và các phương pháp học tăng cường thiếu hiệu quả với không gian trạng thái lớn như 8-puzzle.
      
-## Kết luận
+## 5. Kết luận
     Sau khi trải nghiệm và phân tích hàng loạt thuật toán giải 8-puzzle, có thể thấy rằng mỗi phương pháp đều mang trong mình những điểm mạnh và hạn chế riêng. Những thuật toán kinh điển như A* hay IDA* cho thấy sức mạnh vượt trội về hiệu quả và độ tin cậy khi được trang bị heuristic tốt, nhưng lại đòi hỏi bộ nhớ và tài nguyên đáng kể. Các thuật toán local search như hill climbing, simulated annealing hay beam search lại mang đến sự linh hoạt, tiết kiệm tài nguyên, nhưng đôi khi lại không tìm được, bỏ lỡ lời giải chỉ vì kẹt ở local optimum.
     Những kỹ thuật giải có ràng buộc như backtracking, forward checking hay AC-3 giúp ta hiểu sâu hơn về cách ràng buộc và giảm không gian tìm kiếm, dù thực tế chúng ít phù hợp với các bài toán như 8-puzzle do độ phức tạp tăng nhanh. Trong khi đó, các phương pháp học tăng cường như Q-Learning mở ra một hướng đi mới, nhưng lại gặp thách thức lớn về không gian trạng thái khổng lồ.
     Ta cũng thấy rằng không có một thuật toán nào là đúng cho mọi trường hợp. Sự lựa chọn tối ưu phụ thuộc rất nhiều vào mục tiêu cụ thể, tài nguyên sẵn có và cả sự sáng tạo trong cách kết hợp các phương pháp. Cần hiểu rõ bản chất để áp dụng đúng và chính xác
